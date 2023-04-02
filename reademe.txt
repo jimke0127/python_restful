@@ -1,0 +1,36 @@
+# 创建项目目录
+mkdir tutorial
+cd tutorial
+
+# 创建一个virtualenv来隔离我们本地的包依赖关系
+virtualenv env
+source env/bin/activate  # 在Windows下使用 `env\Scripts\activate`
+
+# 在创建的虚拟环境中安装 Django 和 Django REST framework
+pip install django
+pip install djangorestframework
+
+# 创建一个新项目和一个单个应用
+django-admin.py startproject tutorial .  # 注意结尾的'.'符号
+cd tutorial
+django-admin.py startapp quickstart
+cd ..
+
+# 现在第一次同步你的数据库：
+python3 manage.py migrate
+
+# 后续如果models中的数据属性有改动，需要执行以下两句
+python3 manage.py makemigrations
+python3 manage.py migrate
+
+# 会提示输入创建后台的账号和密码，访问：http://127.0.0.1:8000/admin/
+python3 manage.py createsuperuser
+
+# 注意 django.conf.urls.url() 在 Django 3.0 中被弃用，并在 Django 4.0+ 中被删除。
+# 替换url()为re_path(). re_path使用像 的正则表达式url，因此您只需更新导入并替换url为re_path.
+
+# 启动项目
+python3 manage.py runserver
+# 下面地址已经可以访问，注意最后的 / 一定不能少
+http://127.0.0.1:8000/snippets/
+# 最后，代码已经实现了TokenAuthentication认证，访问的时候组要在header增加 Authorization：Token xxxxx
