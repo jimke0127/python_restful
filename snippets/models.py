@@ -38,3 +38,33 @@ class Snippet(models.Model):
         self.highlighted = highlight(self.code, lexer, formatter)
         self.title = self.title + ' hello'
         super(Snippet, self).save(*args, **kwargs)
+
+
+class Category(models.Model):
+    name = models.CharField('分类', max_length=100)
+
+    class Meta:
+        verbose_name = '分类'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+
+class Goods(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    goods_name = models.CharField(max_length=120, blank=True, default='')
+    sku = models.CharField(max_length=30, blank=True, default='')
+    status = models.IntegerField(max_length=11, blank=True, default=1)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='分类', default='1')
+
+    class Meta:
+        ordering = ('created',)
+        verbose_name = '产品'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.goods_name
+
+
+
